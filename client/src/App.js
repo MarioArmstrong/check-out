@@ -1,5 +1,7 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Switch, useHistory, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import {
   ApolloClient,
   InMemoryCache,
@@ -7,7 +9,12 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+
+import Header from "./components/Header";
+import Nav from "./components/Nav";
 import Footer from "./components/Footer";
+import Home from "./components/Home";
+import Missing from "./components/Missing";
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -32,11 +39,14 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Router>
-        <Routes>
-          <Route></Route>
-        </Routes>
-      </Router>
+      <Header />
+      <Nav />
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="*" component={Missing} />
+      </Switch>
       <Footer />
     </ApolloProvider>
   );
